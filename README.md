@@ -7,7 +7,7 @@ For examples and inspiration: [http://hipstercircuits.com/?cat=5](http://hipster
  
 To install:  
 ----------
-    git clone https://intelligentagent@bitbucket.org/intelligentagent/pypruss.git  
+    git clone https://bitbucket.org/intelligentagent/pypruss.git  
     cd pypruss
     python setup.py install
     export LD_LIBRARY_PATH=/usr/local/lib  
