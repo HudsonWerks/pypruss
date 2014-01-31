@@ -6,7 +6,8 @@ PRUs on BeagleBone.
 For examples and inspiration: [http://hipstercircuits.com/?cat=5](http://hipstercircuits.com/?cat=5)  
  
 To install from a package on Angstrom: 
-[http://wiki.thing-printer.com/index.php?title=PyPRUSS_on_BeagleBone]
+--------------------------------------
+[http://wiki.thing-printer.com/index.php?title=PyPRUSS_on_BeagleBone](http://wiki.thing-printer.com/index.php?title=PyPRUSS_on_BeagleBone)
  
 To install from source:  
 ----------
