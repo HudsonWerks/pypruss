@@ -98,6 +98,22 @@ static PyObject *pypruss_pru_enable(PyObject *self, PyObject *args){
     Py_INCREF(Py_None);													// Return None to indicate Ok
     return Py_None;	
 }
+// Read data from memory
+static PyObject *pypruss_map_prumem(PyObject *self, PyObject *args){
+    int mem_type;       // PRUSS0_PRU0_DATARAM or PRUSS0_PRU1_DATARAM
+    void *p;
+    int rc;
+
+    if (!PyArg_ParseTuple(args, "i", &mem_type))
+        return NULL;
+    
+    rc = prussdrv_map_prumem(mem_type, &p);
+    if (rc)
+        return NULL;
+
+    // FIXME: This is wrong for shared data areas and v1 devices
+    return PyBuffer_FromReadWriteMemory(p, 8*1024);
+}
 
 // Write data to the memory
 static PyObject *pypruss_pru_write_memory(PyObject *self, PyObject *args){
@@ -189,14 +205,15 @@ static PyObject *pypruss_ddr_addr(PyObject *self, PyObject *args){
 	char hex[12];
 	unsigned long addr = 0;
 
-	fd = open ("/sys/class/uio/uio0/maps/map2/addr", O_RDONLY, S_IREAD);
+	fd = open ("/sys/class/uio/uio0/maps/map1/addr", O_RDONLY, S_IREAD);
 	if (fd){
-		read(fd, hex, 10);
+		read(fd, hex, 11);
+		fprintf(stderr, "DDR addr is: 0x%s\n", hex);
         addr = strtoul(hex, NULL, 16);
         close(fd);    	
   	}
 	else{
-		printf("Unable to open /sys/class/uio/uio0/maps/map2/addr\n");	
+		printf("Unable to open /sys/class/uio/uio0/maps/map1/addr\n");	
 		return NULL;
 	}
 
@@ -210,20 +227,19 @@ static PyObject *pypruss_ddr_size(PyObject *self, PyObject *args){
 	unsigned long size = 0;
 	int len;
 
-	fd = open ("/sys/class/uio/uio0/maps/map2/size", O_RDONLY, S_IREAD);
+	fd = open ("/sys/class/uio/uio0/maps/map1/size", O_RDONLY, S_IREAD);
 	if (fd){
 		len = read(fd, hex, 10);
         size = strtoul(hex, NULL, 16);
         close(fd);    	
   	}
 	else{
-		printf("Unable to open /sys/class/uio/uio0/maps/map2/size\n");	
+		printf("Unable to open /sys/class/uio/uio0/maps/map1/size\n");	
 		return NULL;
 	}
 
 	return Py_BuildValue("k", size);
 }
-
 
 
 // Declare the methods to export
@@ -235,6 +251,7 @@ static PyMethodDef pypruss_methods[] = {
 		{ "pru_reset", (PyCFunction)pypruss_pru_reset, METH_VARARGS, NULL},
 		{ "pru_disable", (PyCFunction)pypruss_pru_disable, METH_VARARGS, NULL},
 		{ "pru_enable", (PyCFunction)pypruss_pru_enable, METH_VARARGS, NULL},		
+        { "map_prumem", (PyCFunction)pypruss_map_prumem, METH_VARARGS, NULL},
 		{ "pru_write_memory", (PyCFunction)pypruss_pru_write_memory, METH_VARARGS, NULL},
         { "pruintc_init", (PyCFunction)pypruss_pruintc_init, METH_VARARGS, NULL },
         { "exec_program", (PyCFunction)pypruss_exec_program, METH_VARARGS, NULL },
@@ -248,5 +265,9 @@ static PyMethodDef pypruss_methods[] = {
  
 // Some sort of init stuff.         
 PyMODINIT_FUNC initpypruss(){
-        Py_InitModule3("pypruss", pypruss_methods, "Extenstion lib for PRUSS");
+    PyObject *m;
+    m = Py_InitModule3("pypruss", pypruss_methods, "Extenstion lib for PRUSS");
+    PyModule_AddIntMacro(m, PRUSS0_PRU0_DATARAM);
+    PyModule_AddIntMacro(m, PRUSS0_PRU1_DATARAM);
 }
+
