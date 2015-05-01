@@ -28,7 +28,6 @@ try:
           ext_modules=[Extension('pypruss',
                                  ['pypruss/pypruss.c', 'pypruss/prussdrv.c'],
                                  include_dirs=['pypruss/include',
-                                               '/usr/include/python2.7',
                                                '/usr/include'],
                                  define_macros=[('__DEBUG', None)],
                                  libraries=['pthread'],
@@ -36,5 +35,5 @@ try:
                                  )],
           )
     print("Finished installing, Great!")
-except Exception, e:
+except Exception as e:
     print("Install failed with exception:\n%s" % e)
