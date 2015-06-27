@@ -1,7 +1,6 @@
 PyPRUSS
 =======
-PyPRUSS is a Python binding for controlling the 
-PRUs on BeagleBone. 
+PyPRUSS is a Python binding for controlling the PRUs on the BeagleBone.
 
 For examples and inspiration: [http://hipstercircuits.com/?cat=5](http://hipstercircuits.com/?cat=5)  
  
@@ -9,19 +8,17 @@ To install from a package on Angstrom:
 --------------------------------------
 [http://wiki.thing-printer.com/index.php?title=PyPRUSS_on_BeagleBone](http://wiki.thing-printer.com/index.php?title=PyPRUSS_on_BeagleBone)
  
-To install from source:  
+To install from source:
 ----------
     git clone https://bitbucket.org/intelligentagent/pypruss.git  
     cd pypruss
     python setup.py install
     export LD_LIBRARY_PATH=/usr/local/lib  
-  
-Note that you must load the uio_pruss kernel module. There is a function for 
-loading and unloading this in the library called modprobe() with an optional 
-argument for the DDR size. To do it manually its "modprobe uio_pruss". This must be done 
-on every boot. 
+    
+Update 06/21/15 (Debian) - With current Debian distros (Wheezy and Jessie), the Device Tree fragment comes pre-loaded on the board's firmware. Therefore, the requirements for using PyPRUSS after compiling the library from source are the following:
 
-Update: It appears there is trouble with the pasm compiler. The following might not work..
+1. apt-get install am335x-pru-package && ti-pru-cgt-installer
+2. echo BB-BONE-PRU-01 >/sys/devices/bone_capemgr.9/slots
 
 To try the blinkled example:  
 ----------------------------
