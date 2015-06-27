@@ -15,7 +15,7 @@ To install from source:
     python setup.py install
     export LD_LIBRARY_PATH=/usr/local/lib  
     
-Update 06/21/15 (Debian) - With current Debian distros (Wheezy and Jessie), the Device Tree fragment comes pre-loaded on the board's firmware. Therefore, the requirements for using PyPRUSS after compiling the library from source are the following:
+Update 06/21/15 (Debian) - With current Debian distros (Wheezy and Jessie) for the Beaglebone Black, the Device Tree fragment comes pre-loaded on the board's firmware. Therefore, the requirements for using PyPRUSS after compiling the library from source are the following:
 
 1. apt-get install am335x-pru-package && ti-pru-cgt-installer
 2. echo BB-BONE-PRU-01 >/sys/devices/bone_capemgr.9/slots
