@@ -1,5 +1,5 @@
 
-COMPILER=../../PASM/pasm -b 
+COMPILER=pasm -b 
 FILENAME=blinkled
 
 .PHONY: clean all
