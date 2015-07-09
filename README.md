@@ -26,6 +26,4 @@ To try the blinkled example:
     make  
     python blinkled.py  
 
-You should then see three of the user leds blink 10 times. 
-
-There are a few other examples in there as well, have a look at them for other functions. 
+You should then see three of the user leds blink rapidly 10 times. 
